@@ -1,12 +1,15 @@
 package ar.unrn.tp.modelo;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class ClaveVenta {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private int numero;
 	private int anio;
@@ -26,7 +29,7 @@ public class ClaveVenta {
 		} else
 			this.numero += 1;
 
-		return String.valueOf(this.numero + this.anio);
+		return this.numero + "-" + this.anio;
 	}
 
 	private int getNumero() {
@@ -44,4 +47,9 @@ public class ClaveVenta {
 	private void setAnio(int anio) {
 		this.anio = anio;
 	}
+
+	private ClaveVenta() {
+
+	}
+
 }

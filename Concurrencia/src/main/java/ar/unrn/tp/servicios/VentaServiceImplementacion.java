@@ -62,7 +62,7 @@ public class VentaServiceImplementacion implements VentaService {
 			carrito.actualizarPromociones(this.promocionesMarca(), this.promocionBancaria());
 			var venta = carrito.realizarCompra(idTarjeta);
 
-			TypedQuery<ClaveVenta> clave = em.createQuery("select * from claveventa where id = :id", ClaveVenta.class);
+			TypedQuery<ClaveVenta> clave = em.createQuery("from ClaveVenta where id = :id", ClaveVenta.class);
 			clave.setParameter("id", 1);
 			clave.setLockMode(LockModeType.PESSIMISTIC_WRITE);
 
@@ -210,7 +210,7 @@ public class VentaServiceImplementacion implements VentaService {
 		try {
 
 			tx.begin();
-			em.persist(new ClaveVenta(1, anio));
+			var clave = new ClaveVenta(0, anio);
 
 		} catch (Exception e) {
 			tx.rollback();
