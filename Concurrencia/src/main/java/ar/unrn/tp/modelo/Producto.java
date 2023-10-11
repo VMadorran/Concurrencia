@@ -30,7 +30,7 @@ public class Producto {
 	private double precio;
 	private String marca;
 	@Version
-	private int version;
+	private Long version;
 
 	public Producto(String descripcion, Long codigo, Categoria categoria, double precio, String marca)
 			throws DatoVacioException, CategoriaInvalidaException {
@@ -54,11 +54,11 @@ public class Producto {
 
 	}
 
-	public int version() {
+	public Long version() {
 		return this.version;
 	}
 
-	public boolean version(int version) {
+	public boolean version(Long version) {
 		return this.version == version;
 	}
 

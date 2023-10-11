@@ -78,7 +78,7 @@ public class ProductoServiceTest {
 		});
 
 		try {
-			implementacion.modificarProducto(1L, "Camiseta", 1500, "Nope", 1L);
+			implementacion.modificarProducto(1L, "Camiseta", 1500, "Nope", 1L, 1L);
 		} catch (DatoVacioException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

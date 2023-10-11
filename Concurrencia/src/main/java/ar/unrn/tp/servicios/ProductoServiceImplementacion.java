@@ -49,26 +49,30 @@ public class ProductoServiceImplementacion implements ProductoService {
 	}
 
 	@Override
-	public void modificarProducto(Long idProducto, String descripcion, double precio, String marca, Long idCategoria)
-			throws DatoVacioException, CategoriaInvalidaException, OptimisticLockException {
+	public void modificarProducto(Long idProducto, String descripcion, double precio, String marca, Long idCategoria,
+			Long version) throws DatoVacioException, CategoriaInvalidaException, OptimisticLockException {
 
 		EntityManager em = this.emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		try {
 			tx.begin();
+			TypedQuery<Long> versionEnBase = em.createQuery("select version from Producto p where id=: idProducto",
+					Long.class);
+			versionEnBase.setParameter("idProducto", idProducto);
+			Long nroVersion = versionEnBase.getSingleResult();
 
+			if (version != nroVersion) {
+				throw new OptimisticLockException("Ha ocurrido un error al actulizar el producto");
+			}
 			Categoria categoria = em.find(Categoria.class, idCategoria);
 			Producto producto = em.find(Producto.class, idProducto);
-
 			producto.modificarProducto(descripcion, precio, marca, categoria);
 			em.persist(producto);
 			tx.commit();
 
 		} catch (Exception e) {
 			tx.rollback();
-//			throw e;
-			e.printStackTrace();
-			throw new OptimisticLockException("Ha ocurrido un error al actulizar el producto");
+			throw e;
 		} finally {
 			if (em != null && em.isOpen())
 				em.close();
@@ -98,6 +102,24 @@ public class ProductoServiceImplementacion implements ProductoService {
 		}
 
 		return productos;
+	}
+
+	public Producto productoPorId(Long idProducto) {
+		Producto producto = null;
+		EntityManager em = this.emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		try {
+			producto = em.find(Producto.class, idProducto);
+
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			if (em != null && em.isOpen())
+				em.close();
+		}
+
+		return producto;
 	}
 
 	private boolean datoNulo(String dato) {

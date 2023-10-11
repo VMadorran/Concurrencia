@@ -21,6 +21,7 @@ import ar.unrn.tp.api.ProductoService;
 import ar.unrn.tp.exception.CategoriaInvalidaException;
 import ar.unrn.tp.exception.DatoVacioException;
 import ar.unrn.tp.modelo.Categoria;
+import ar.unrn.tp.modelo.Producto;
 import ar.unrn.tp.servicios.CategoriaServiceImplementacion;
 import ar.unrn.tp.servicios.ProductoServiceImplementacion;
 import jakarta.persistence.EntityManagerFactory;
@@ -63,7 +64,8 @@ public class ProductoUI extends JFrame {
 		for (Categoria categoria : categorias) {
 			categoriaComboBox.addItem(categoria.infoCategoria());
 		}
-
+		producService.ProductoService(emf);
+		Producto producto = producService.productoPorId(1L);
 		nombreTextField = new JTextField();
 		nombreTextField.setFont(new Font("Arial", Font.PLAIN, 12));
 		nombreTextField.setBounds(164, 89, 86, 20);
@@ -116,13 +118,13 @@ public class ProductoUI extends JFrame {
 				String marca = null;
 				Long categoria = 0L;
 				float precio = 0;
-				producService.ProductoService(emf);
+
 				try {
 					descripcion = nombreTextField.getText();
 					categoria = categorias.get(categoriaComboBox.getSelectedIndex()).idCategoria();
 					marca = marcaTextField.getText();
 					precio = Float.parseFloat(precioTextField.getText());
-					producService.modificarProducto(1L, descripcion, precio, marca, categoria);
+					producService.modificarProducto(1L, descripcion, precio, marca, categoria, producto.version());
 					JOptionPane.showMessageDialog(null, "Los datos del producto fueron cambiados");
 				} catch (DatoVacioException | CategoriaInvalidaException | OptimisticLockException e1) {
 					// TODO Auto-generated catch block

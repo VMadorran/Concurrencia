@@ -16,9 +16,11 @@ public interface ProductoService {
 	void crearProducto(Long codigo, String descripcion, double precio, Long idCategoria, String marca) throws Exception;
 
 	// validar que sea un producto existente
-	void modificarProducto(Long idProducto, String descripcion, double precio, String marca, Long idCategoria)
-			throws DatoVacioException, CategoriaInvalidaException, OptimisticLockException;
+	void modificarProducto(Long idProducto, String descripcion, double precio, String marca, Long idCategoria,
+			Long version) throws DatoVacioException, CategoriaInvalidaException, OptimisticLockException;
 
 	// Devuelve todos los productos
 	List<Producto> listarProductos();
+
+	public Producto productoPorId(Long idProducto);
 }
